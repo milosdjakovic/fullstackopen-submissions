@@ -62,9 +62,9 @@ const App = () => {
   return (
     <div>
       <h1>Give feedback</h1>
-      <button type="button" onClick={() => setGood(good + 1)}>good</button>
-      <button type="button" onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button type="button" onClick={() => setBad(bad + 1)}>bad</button>
+      <Button onClick={() => setGood(good + 1)} text="good" />
+      <Button onClick={() => setNeutral(neutral + 1)} text="neutral" />
+      <Button onClick={() => setBad(bad + 1)} text="bad" />
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
