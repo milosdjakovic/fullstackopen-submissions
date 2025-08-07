@@ -14,7 +14,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
 
-  const [votes, setVotes] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 })
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
 
   const nextAnecdote = () => {
     const randomIndex = Math.floor(Math.random() * anecdotes.length)
@@ -22,9 +22,9 @@ const App = () => {
   }
 
   const voteAnecdote = () => {
-    const copy = { ...votes }
-    copy[selected] += 1
-    setVotes(copy)
+    const updatedVotes = [...votes]
+    updatedVotes[selected] += 1
+    setVotes(updatedVotes)
   }
 
   return (
