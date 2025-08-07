@@ -3,6 +3,17 @@ import { useState } from 'react'
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
 
+  const noFeedback = all === 0
+
+  if (noFeedback) {
+    return (
+      <>
+        <p>Statistics</p>
+        <p>No feedback given</p>
+      </>
+    )
+  }
+
   const average = () => {
     if (all === 0) {
       return 0
