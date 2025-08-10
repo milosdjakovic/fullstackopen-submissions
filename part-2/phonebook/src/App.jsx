@@ -10,21 +10,11 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
-  const [newName, setNewName] = useState('')
-  const [newPhone, setNewPhone] = useState('')
+
   const [filter, setFilter] = useState('')
 
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
 
-  const handlePhoneChange = (event) => {
-    setNewPhone(event.target.value)
-  }
-
-  const handleAddPerson = (event) => {
-    event.preventDefault()
-
+  const handleAddPerson = ({ newName, newPhone }) => {
     const nameExists = persons.some(person => person.name === newName)
 
     if (nameExists) {
@@ -38,9 +28,8 @@ const App = () => {
       phone: newPhone
     }
     setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewPhone('')
   }
+
 
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(filter.toLowerCase())
@@ -52,11 +41,7 @@ const App = () => {
       <Filter filter={filter} handleFilterChange={(e) => setFilter(e.target.value)} />
       <h2>Add an new</h2>
       <PersonForm
-        newName={newName}
-        newPhone={newPhone}
-        handleNameChange={handleNameChange}
-        handlePhoneChange={handlePhoneChange}
-        handleAddPerson={handleAddPerson}
+        onSubmit={handleAddPerson}
       />
       <h2>Numbers</h2>
       <Persons persons={filteredPersons} />

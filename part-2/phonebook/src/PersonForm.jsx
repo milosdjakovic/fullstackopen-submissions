@@ -1,4 +1,26 @@
-const PersonForm = ({ newName, newPhone, handleNameChange, handlePhoneChange, handleAddPerson }) => {
+import { useState } from 'react'
+
+const PersonForm = ({ onSubmit }) => {
+    const [newName, setNewName] = useState('')
+    const [newPhone, setNewPhone] = useState('')
+
+    const handleNameChange = (event) => {
+        setNewName(event.target.value)
+    }
+
+    const handlePhoneChange = (event) => {
+        setNewPhone(event.target.value)
+    }
+
+    const handleAddPerson = (event) => {
+        event.preventDefault()
+
+        onSubmit({ newName, newPhone })
+
+        setNewName('')
+        setNewPhone('')
+    }
+
     return (
         <form onSubmit={handleAddPerson}>
             <div>
