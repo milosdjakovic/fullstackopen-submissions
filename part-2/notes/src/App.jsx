@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import noteService from "./services/notes";
 import Note from "./components/Note";
 import Notification from "./components/Notification";
+import noteService from "./services/notes";
 
 const App = () => {
 	const [notes, setNotes] = useState([]);
@@ -15,26 +15,6 @@ const App = () => {
 		});
 	}, []);
 
-	const toggleImportanceOf = (id) => {
-		const note = notes.find((n) => n.id === id);
-		const changedNote = { ...note, important: !note.important };
-
-		noteService
-			.update(id, changedNote)
-			.then((returnedNote) => {
-				setNotes(notes.map((note) => (note.id === id ? returnedNote : note)));
-			})
-			.catch((error) => {
-				setErrorMessage(
-					`Note '${note.content}' was already removed from server`,
-				);
-				setTimeout(() => {
-					setErrorMessage(null);
-				}, 5000);
-				setNotes(notes.filter((n) => n.id !== id));
-			});
-	};
-
 	const addNote = (event) => {
 		event.preventDefault();
 		const noteObject = {
@@ -46,6 +26,26 @@ const App = () => {
 			setNotes(notes.concat(returnedNote));
 			setNewNote("");
 		});
+	};
+
+	const toggleImportanceOf = (id) => {
+		const note = notes.find((n) => n.id === id);
+		const changedNote = { ...note, important: !note.important };
+
+		noteService
+			.update(id, changedNote)
+			.then((returnedNote) => {
+				setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+			})
+			.catch((error) => {
+				setErrorMessage(
+					`Note '${note.content}' was already removed from server`,
+				);
+				setTimeout(() => {
+					setErrorMessage(null);
+				}, 5000);
+				setNotes(notes.filter((n) => n.id !== id));
+			});
 	};
 
 	const handleNoteChange = (event) => {
