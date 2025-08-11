@@ -29,11 +29,15 @@ const App = () => {
       phone: newPhone
     }
 
-    axios.post('http://localhost:3001/persons', personObject)
-      .then(response => {
-        setPersons(persons.concat(response.data))
+    personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
       })
-
+      .catch(error => {
+        console.error('Error adding person:', error)
+        alert(`Failed to add ${newName}. Please try again later.`)
+      })
   }
 
 
