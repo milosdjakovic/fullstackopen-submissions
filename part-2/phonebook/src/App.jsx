@@ -1,73 +1,96 @@
-import { useState, useEffect } from 'react'
-import personService from './services/persons'
-import Filter from './components/Filter'
-import PersonForm from './components/PersonForm'
-import Persons from './components/Persons'
+import { useState, useEffect } from "react";
+import personService from "./services/persons";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
-  const [persons, setPersons] = useState([])
+	const [persons, setPersons] = useState([]);
 
-  const [filter, setFilter] = useState('')
+	const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    personService.getAll().then(initialPersons => {
-      setPersons(initialPersons)
-    })
-  }, [])
+	useEffect(() => {
+		personService.getAll().then((initialPersons) => {
+			setPersons(initialPersons);
+		});
+	}, []);
 
-  const handleAddPerson = ({ newName, newPhone }) => {
-    const nameExists = persons.some(person => person.name === newName)
+	const handleAddPerson = ({ newName, newPhone }) => {
+		const nameExists = persons.some((person) => person.name === newName);
 
-    if (nameExists) {
-      alert(`${newName} is already added to phonebook`)
-      return
-    }
+		if (nameExists) {
+			handleUpdatePerson({
+				id: persons.find((p) => p.name === newName).id,
+				name: newName,
+				phone: newPhone,
+			});
+			return;
+		}
 
-    const personObject = {
-      name: newName,
-      phone: newPhone
-    }
+		const personObject = {
+			name: newName,
+			phone: newPhone,
+		};
 
-    personService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-      })
-      .catch(error => {
-        alert(`Failed to add ${newName}.`)
-      })
-  }
+		personService
+			.createPerson(personObject)
+			.then((returnedPerson) => {
+				setPersons(persons.concat(returnedPerson));
+			})
+			.catch((error) => {
+				alert(`Failed to add ${newName}.`);
+			});
+	};
 
-  const handleDeletePerson = (id) => {
-    const person = persons.find(p => p.id === id)
+	const handleDeletePerson = (id) => {
+		const person = persons.find((p) => p.id === id);
 
-    if (window.confirm(`Delete ${person.name}?`)) {
-      personService.deletePerson(id)
-        .then(() => {
-          setPersons(persons.filter(person => person.id !== id))
-        })
-        .catch(error => {
-          alert(`Failed to delete ${person.name}.`)
-        })
-    }
-  }
+		if (window.confirm(`Delete ${person.name}?`)) {
+			personService
+				.deletePerson(id)
+				.then(() => {
+					setPersons(persons.filter((person) => person.id !== id));
+				})
+				.catch((error) => {
+					alert(`Failed to delete ${person.name}.`);
+				});
+		}
+	};
 
-  const filteredPersons = persons.filter(person =>
-    person.name.toLowerCase().includes(filter.toLowerCase())
-  )
+	const handleUpdatePerson = ({ id, name, phone }) => {
+		if (window.confirm(`Update ${name}'s number to ${phone}?`)) {
+			personService
+				.updatePerson({ id, name, phone })
+				.then((updatedPerson) => {
+					setPersons(
+						persons.map((person) =>
+							person.id === id ? updatedPerson : person,
+						),
+					);
+				})
+				.catch((error) => {
+					alert(`Failed to update ${person.name}'s number.`);
+				});
+		}
+	};
 
-  return (
-    <div>
-      <h1>Phonebook</h1>
-      <Filter filter={filter} handleFilterChange={(e) => setFilter(e.target.value)} />
-      <h2>Add an new</h2>
-      <PersonForm
-        onSubmit={handleAddPerson}
-      />
-      <h2>Numbers</h2>
-      <Persons persons={filteredPersons} onDelete={handleDeletePerson} />
-    </div>
-  )
-}
+	const filteredPersons = persons.filter((person) =>
+		person.name.toLowerCase().includes(filter.toLowerCase()),
+	);
 
-export default App
+	return (
+		<div>
+			<h1>Phonebook</h1>
+			<Filter
+				filter={filter}
+				handleFilterChange={(e) => setFilter(e.target.value)}
+			/>
+			<h2>Add an new</h2>
+			<PersonForm onSubmit={handleAddPerson} />
+			<h2>Numbers</h2>
+			<Persons persons={filteredPersons} onDelete={handleDeletePerson} />
+		</div>
+	);
+};
+
+export default App;

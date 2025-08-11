@@ -7,9 +7,21 @@ const getAll = () => {
 	});
 };
 
-const create = (newPerson) => {
+const createPerson = (newPerson) => {
 	const request = axios.post(baseUrl, newPerson);
 	return request.then((response) => response.data);
 };
 
-export default { getAll, create };
+const deletePerson = (id) => {
+	return axios.delete(`${baseUrl}/${id}`).then((response) => {
+		return response.data;
+	});
+};
+
+const updatePerson = ({ id, name, phone }) => {
+	return axios.put(`${baseUrl}/${id}`, { name, phone }).then((response) => {
+		return response.data;
+	});
+};
+
+export default { getAll, createPerson, deletePerson, updatePerson };
