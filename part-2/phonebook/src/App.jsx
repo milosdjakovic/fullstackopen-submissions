@@ -34,11 +34,23 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
       })
       .catch(error => {
-        console.error('Error adding person:', error)
-        alert(`Failed to add ${newName}. Please try again later.`)
+        alert(`Failed to add ${newName}.`)
       })
   }
 
+  const handleDeletePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService.deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+          alert(`Failed to delete ${person.name}.`)
+        })
+    }
+  }
 
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(filter.toLowerCase())
@@ -53,7 +65,7 @@ const App = () => {
         onSubmit={handleAddPerson}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} onDelete={handleDeletePerson} />
     </div>
   )
 }
