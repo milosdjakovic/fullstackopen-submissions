@@ -5,6 +5,7 @@ import CountryInfo from "./components/CountryInfo";
 import WeatherInfo from "./components/WeatherInfo";
 
 import { getAllCountries } from "./services/countries";
+import CountryListItem from "./components/CountryListItem";
 
 const App = () => {
 	const [country, setCountry] = useState("");
@@ -41,15 +42,11 @@ const App = () => {
 				<p>Too many matches, please refine your search.</p>
 			) : (
 				filteredCountries.map((country) => (
-					<div key={country.name.official}>
-						<p>{country.name.common}</p>
-						<button
-							type="button"
-							onClick={() => setCountry(country.name.common)}
-						>
-							Show Details
-						</button>
-					</div>
+					<CountryListItem
+						key={country.name.official}
+						name={country.name.common}
+						onShowDetails={() => setCountry(country.name.common)}
+					/>
 				))
 			)}
 			<pre>{JSON.stringify(filteredCountries, null, 2)}</pre>
