@@ -28,7 +28,10 @@ const App = () => {
 
 	return (
 		<div>
-			find countries: <input value={country} onChange={handleChange} />
+			find countries: <input value={country} onChange={handleChange} />{" "}
+			<button type="button" onClick={() => setCountry("")}>
+				Clear
+			</button>
 			{singleMatch ? (
 				<div>
 					<h2>{filteredCountries[0].name.common}</h2>
@@ -54,6 +57,12 @@ const App = () => {
 				filteredCountries.map((country) => (
 					<div key={country.name.official}>
 						<p>{country.name.common}</p>
+						<button
+							type="button"
+							onClick={() => setCountry(country.name.common)}
+						>
+							Show Details
+						</button>
 					</div>
 				))
 			)}
