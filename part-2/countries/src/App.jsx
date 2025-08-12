@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 import CountrySearch from "./components/CountrySearch";
 
-
 import { getAllCountries } from "./services/countries";
 import CountriesContent from "./components/CountriesContent";
 
