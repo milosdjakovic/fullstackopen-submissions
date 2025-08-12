@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { getAllCountries } from "./services/countries";
 
 const App = () => {
-	const [country, setCountry] = useState(null);
+	const [country, setCountry] = useState("");
 	const [countries, setCountries] = useState([]);
 
 	useEffect(() => {
@@ -16,16 +16,23 @@ const App = () => {
 		setCountry(event.target.value);
 	};
 
-	const filteredCountries = country
-		? countries.filter((c) =>
-				c.name.common.toLowerCase().includes(country.toLowerCase()),
-			)
-		: [];
+	const filteredCountries =
+		country === ""
+			? []
+			: countries.filter((c) =>
+					c.name.common.toLowerCase().includes(country.toLowerCase()),
+				);
+
+	const tooManyMatches = filteredCountries.length > 10;
 
 	return (
 		<div>
 			find countries: <input value={country} onChange={handleChange} />
-			<pre>{JSON.stringify(filteredCountries, null, 2)}</pre>
+			{country === "" ? null : tooManyMatches ? (
+				<p>Too many matches, please refine your search.</p>
+			) : (
+				<pre>{JSON.stringify(filteredCountries, null, 2)}</pre>
+			)}
 		</div>
 	);
 };
