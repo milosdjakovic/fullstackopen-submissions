@@ -24,11 +24,29 @@ const App = () => {
 				);
 
 	const tooManyMatches = filteredCountries.length > 10;
+	const singleMatch = filteredCountries.length === 1;
 
 	return (
 		<div>
 			find countries: <input value={country} onChange={handleChange} />
-			{country === "" ? null : tooManyMatches ? (
+			{singleMatch ? (
+				<div>
+					<h2>{filteredCountries[0].name.common}</h2>
+					<p>Capital: {filteredCountries[0].capital}</p>
+					<p>Population: {filteredCountries[0].population}</p>
+					<ul>
+						{Object.entries(filteredCountries[0].languages).map(
+							([key, value]) => (
+								<li key={key}>{value}</li>
+							),
+						)}
+					</ul>
+					<img
+						src={filteredCountries[0].flags.png}
+						alt={filteredCountries[0].name.common}
+					/>
+				</div>
+			) : tooManyMatches ? (
 				<p>Too many matches, please refine your search.</p>
 			) : (
 				filteredCountries.map((country) => (
