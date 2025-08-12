@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import CountrySearch from "./components/CountrySearch";
 import CountryInfo from "./components/CountryInfo";
 import WeatherInfo from "./components/WeatherInfo";
 
@@ -15,10 +16,6 @@ const App = () => {
 		});
 	}, []);
 
-	const handleChange = (event) => {
-		setCountry(event.target.value);
-	};
-
 	const filteredCountries =
 		country === ""
 			? []
@@ -31,10 +28,7 @@ const App = () => {
 
 	return (
 		<div>
-			find countries: <input value={country} onChange={handleChange} />{" "}
-			<button type="button" onClick={() => setCountry("")}>
-				Clear
-			</button>
+			<CountrySearch value={country} onSearch={(value) => setCountry(value)} />
 			{singleMatch ? (
 				<>
 					<CountryInfo country={filteredCountries[0]} />
