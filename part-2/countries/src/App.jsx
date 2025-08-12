@@ -31,8 +31,13 @@ const App = () => {
 			{country === "" ? null : tooManyMatches ? (
 				<p>Too many matches, please refine your search.</p>
 			) : (
-				<pre>{JSON.stringify(filteredCountries, null, 2)}</pre>
+				filteredCountries.map((country) => (
+					<div key={country.name.official}>
+						<p>{country.name.common}</p>
+					</div>
+				))
 			)}
+			<pre>{JSON.stringify(filteredCountries, null, 2)}</pre>
 		</div>
 	);
 };
