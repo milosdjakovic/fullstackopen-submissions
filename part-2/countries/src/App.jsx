@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import WeatherInfo from "./components/WeatherInfo";
+
 import { getAllCountries } from "./services/countries";
 
 const App = () => {
@@ -49,6 +51,10 @@ const App = () => {
 					<img
 						src={filteredCountries[0].flags.png}
 						alt={filteredCountries[0].name.common}
+					/>
+					<WeatherInfo
+						lat={filteredCountries[0].latlng[0]}
+						lon={filteredCountries[0].latlng[1]}
 					/>
 				</div>
 			) : tooManyMatches ? (
