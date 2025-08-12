@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import CountryInfo from "./components/CountryInfo";
 import WeatherInfo from "./components/WeatherInfo";
 
 import { getAllCountries } from "./services/countries";
@@ -35,28 +36,13 @@ const App = () => {
 				Clear
 			</button>
 			{singleMatch ? (
-				<div>
-					<h2>{filteredCountries[0].name.common}</h2>
-					<p>Capital: {filteredCountries[0].capital}</p>
-					<p>Population: {filteredCountries[0].population}</p>
-					<p>Area: {filteredCountries[0].area}</p>
-					<p>Languages:</p>
-					<ul>
-						{Object.entries(filteredCountries[0].languages).map(
-							([key, value]) => (
-								<li key={key}>{value}</li>
-							),
-						)}
-					</ul>
-					<img
-						src={filteredCountries[0].flags.png}
-						alt={filteredCountries[0].name.common}
-					/>
+				<>
+					<CountryInfo country={filteredCountries[0]} />
 					<WeatherInfo
 						lat={filteredCountries[0].latlng[0]}
 						lon={filteredCountries[0].latlng[1]}
 					/>
-				</div>
+				</>
 			) : tooManyMatches ? (
 				<p>Too many matches, please refine your search.</p>
 			) : (
